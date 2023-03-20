@@ -4,17 +4,17 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D body;
 
-    public float horizontal;
-    public float vertical;
-
-    public static PlayerController playerController;
-
+    float horizontal;
+    float vertical;
+    PlayerController playerController;
     public float runSpeed = 15.0f;
 
-    void Awake()
+    void Start()
     {
         body = GetComponent<Rigidbody2D>();
-        playerController = this;
+        if(playerController == null) {
+            playerController = this;
+        }
     }
 
     void Update()
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         BulletController bullet = col.gameObject.GetComponentInParent<BulletController>();
         if (bullet != null)
         {
-
+            
         }
     }
 
