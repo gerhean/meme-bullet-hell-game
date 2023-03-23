@@ -5,22 +5,19 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public GameObject bullet;
-    public float firerate = 1f;
+    public float attackCooldown = 1f;
 
     void Start()
     {
         StartCoroutine(Shoot());
     }
 
-    private IEnumerator Shoot()
+    public virtual IEnumerator Shoot()
     {
         while (true)
         {
-            foreach (Quaternion a in GenerateRotatedQuaternions(40))
-            {
-                SpawnLocalRotation(a);
-            }
-            yield return new WaitForSeconds(firerate);
+            ShootAtPlayer();
+            yield return new WaitForSeconds(attackCooldown);
         }
     }
 
@@ -39,9 +36,9 @@ public class EnemyController : MonoBehaviour
         return result;
     }
 
-    void ShootAtPlayer()
+    protected void ShootAtPlayer(Quaternion offset = default)
     {
-        ShootAt(transform.position, PlayerController.playerController.transform.position);
+        ShootAt(transform.position, PlayerController.playerController.transform.position, offset);
     }
 
 

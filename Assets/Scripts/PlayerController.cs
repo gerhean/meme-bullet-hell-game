@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     Rigidbody2D body;
-
+    public TMPro.TextMeshProUGUI textbox;
     private float horizontal;
     private float vertical;
 
@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
         hpbar.Resize(currentHP / maxHP);
         print(currentHP);
         //Add something when player is dead
+        if (currentHP <= 0)
+            textbox.gameObject.SetActive(false);
     }
 
 
