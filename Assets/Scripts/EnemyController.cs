@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public GameObject bullet;
+    public float firerate = 1f;
 
     void Start()
     {
@@ -15,14 +16,15 @@ public class EnemyController : MonoBehaviour
     {
         while (true)
         {
-            foreach (Quaternion a in GenerateRotatedQuaternions(4))
+            foreach (Quaternion a in GenerateRotatedQuaternions(40))
             {
                 SpawnLocalRotation(a);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(firerate);
         }
     }
 
+    //Returns a list of n quarts each rotated 360/n eulerangles of each other
     public List<Quaternion> GenerateRotatedQuaternions(int numQuarternions)
     {
         List<Quaternion> result = new();
@@ -42,12 +44,6 @@ public class EnemyController : MonoBehaviour
         ShootAt(transform.position, PlayerController.playerController.transform.position);
     }
 
-    void ShootAtPlayerPredictive()
-    {
-        Vector2 playerDirection = new Vector2(PlayerController.playerController.horizontal, PlayerController.playerController.vertical).normalized;
-
-
-    }
 
     protected void ShootAt(Vector3 startLoc, Vector3 endLoc, Quaternion offset = default)
     {

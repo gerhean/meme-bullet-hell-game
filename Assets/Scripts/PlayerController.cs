@@ -4,12 +4,16 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D body;
 
-    public float horizontal;
-    public float vertical;
+    private float horizontal;
+    private float vertical;
 
     public static PlayerController playerController;
+    public Hpbar hpbar;
 
     public float runSpeed = 15.0f;
+
+    public float maxHP = 10f;
+    public float currentHP = 10f;
 
     void Awake()
     {
@@ -33,8 +37,16 @@ public class PlayerController : MonoBehaviour
         BulletController bullet = col.gameObject.GetComponentInParent<BulletController>();
         if (bullet != null)
         {
-
+            takeDamage(1f);
         }
+    }
+
+    void takeDamage(float hp)
+    {
+        currentHP -= hp;
+        hpbar.Resize(currentHP / maxHP);
+        print(currentHP);
+        //Add something when player is dead
     }
 
 
