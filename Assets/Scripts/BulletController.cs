@@ -14,7 +14,7 @@ public class BulletController : MonoBehaviour
     }
 
 
-    private void Update()
+    public virtual void Update()
     {
         // Get the current rotation of the object
         Quaternion rotation = transform.rotation;

@@ -36,14 +36,19 @@ public class EnemyController : MonoBehaviour
         return result;
     }
 
-    protected void ShootAtPlayer(Quaternion offset = default)
+    protected GameObject ShootAtPlayer(Quaternion offset = default, GameObject toSpawn = default)
     {
-        ShootAt(transform.position, PlayerController.playerController.transform.position, offset);
+        return ShootAt(transform.position, PlayerController.playerController.transform.position, offset, toSpawn);
     }
 
 
-    protected void ShootAt(Vector3 startLoc, Vector3 endLoc, Quaternion offset = default)
+    protected GameObject ShootAt(Vector3 startLoc, Vector3 endLoc, Quaternion offset = default, GameObject toSpawn = default)
     {
+
+        if (toSpawn == default)
+        {
+            toSpawn = bullet;
+        }
 
         Vector3 myLocation = startLoc;
         Vector3 targetLocation = endLoc;
@@ -54,7 +59,7 @@ public class EnemyController : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
         Quaternion rotation = Quaternion.LookRotation(endLoc - startLoc, Vector3.forward);
 
-        GameObject toAdd = Instantiate(bullet, startLoc, rotation);
+        GameObject toAdd = Instantiate(toSpawn, startLoc, rotation);
 
 
         toAdd.transform.rotation = Quaternion.RotateTowards(Quaternion.Euler(0, 0, 0), targetRotation, 360f);
@@ -64,11 +69,15 @@ public class EnemyController : MonoBehaviour
             offset = Quaternion.Euler(0, 0, 0);
         }
         toAdd.transform.rotation = offset * toAdd.transform.rotation;
+        return toAdd;
     }
 
-    protected void SpawnLocalRotation(Quaternion offset = default, Vector3 loc = default)
+    protected GameObject SpawnLocalRotation(Quaternion offset = default, Vector3 loc = default, GameObject toSpawn = default)
     {
-
+        if (toSpawn == default)
+        {
+            toSpawn = bullet;
+        }
         if (offset.z == 0 || offset.eulerAngles == Vector3.zero)
         {
             offset = Quaternion.Euler(0, 0, 0);
@@ -82,9 +91,9 @@ public class EnemyController : MonoBehaviour
 
         offset *= Quaternion.Euler(0, 0, 90);
 
-        GameObject toAdd = Instantiate(bullet, loc, gameObject.transform.rotation);
+        GameObject toAdd = Instantiate(toSpawn, loc, gameObject.transform.rotation);
         toAdd.transform.rotation = offset * transform.rotation;
-
+        return toAdd;
 
     }
 }
