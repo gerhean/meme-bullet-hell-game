@@ -5,16 +5,13 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI textbox;
+    public bool continueTimer = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
     {
-        textbox.text = Time.timeSinceLevelLoad.ToString();
+        if (continueTimer)
+            textbox.text = Time.timeSinceLevelLoad.ToString();
     }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1220049601724816713}
   - component: {fileID: 1220049601724816710}
-  - component: {fileID: -4232829754151560924}
+  - component: {fileID: -807920817035896416}
   m_Layer: 0
   m_Name: Enemy3
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-4232829754151560924
+--- !u!114 &-807920817035896416
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,8 +94,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220049601724816708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6c51b115cf8df24f9bb831a04efca40, type: 3}
+  m_Script: {fileID: 11500000, guid: ab3508f8eb7953e4cba2fa1b6088288b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 8208547715833221812, guid: 5315ac7699bd74e4b92eb21427a6c0d6, type: 3}
-  firerate: 1
+  attackCooldown: 1
+  slowBullet: {fileID: 8208547715833221812, guid: be0b04aac94ee5248a765e410fdc5dc4, type: 3}

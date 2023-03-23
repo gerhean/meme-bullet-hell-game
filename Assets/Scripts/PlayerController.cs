@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         print(currentHP);
         //Add something when player is dead
         if (currentHP <= 0)
-            textbox.gameObject.SetActive(false);
+            textbox.gameObject.GetComponent<Timer>().continueTimer = false;
     }
 
 
