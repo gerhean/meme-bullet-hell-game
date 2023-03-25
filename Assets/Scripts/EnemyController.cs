@@ -7,6 +7,10 @@ public class EnemyController : MonoBehaviour
     public GameObject bullet;
     public float attackCooldown = 1f;
 
+    private int pityCount = 0;
+    public int maxPity = 80;
+    private bool isFiftyFifty = true;
+
     void Start()
     {
         StartCoroutine(Shoot());
@@ -41,6 +45,31 @@ public class EnemyController : MonoBehaviour
         return ShootAt(transform.position, PlayerController.playerController.transform.position, offset, toSpawn);
     }
 
+    protected void setPull(BulletController bullet)
+    {
+        if (pityCount < maxPity) {
+            pityCount++;
+            bullet.pullType = 3;
+        }
+        else {
+            pityCount = 0;
+            bullet.yellowGlow.SetActive(true);
+            if (isFiftyFifty) {
+                isFiftyFifty = false;
+                if (Random.Range(0, 3) == 0) {
+                    bullet.pullType = 6;
+                }
+                else {
+                    bullet.pullType = 5;
+                }
+            }
+            else {
+                isFiftyFifty = true;
+                bullet.pullType = 6;
+            }
+        }
+    }
+
 
     protected GameObject ShootAt(Vector3 startLoc, Vector3 endLoc, Quaternion offset = default, GameObject toSpawn = default)
     {
@@ -60,7 +89,7 @@ public class EnemyController : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(endLoc - startLoc, Vector3.forward);
 
         GameObject toAdd = Instantiate(toSpawn, startLoc, rotation);
-
+        setPull(toAdd.GetComponent<BulletController>());
 
         toAdd.transform.rotation = Quaternion.RotateTowards(Quaternion.Euler(0, 0, 0), targetRotation, 360f);
 
