@@ -9,7 +9,6 @@ public class EnemyController : MonoBehaviour
 
     private int pityCount = 0;
     public int maxPity = 80;
-    private bool isFiftyFifty = true;
 
     void Start()
     {
@@ -49,24 +48,37 @@ public class EnemyController : MonoBehaviour
     {
         if (pityCount < maxPity) {
             pityCount++;
-            bullet.pullType = 3;
-        }
-        else {
-            pityCount = 0;
-            bullet.yellowGlow.SetActive(true);
-            if (isFiftyFifty) {
-                isFiftyFifty = false;
-                if (Random.Range(0, 3) == 0) {
-                    bullet.pullType = 6;
-                }
-                else {
-                    bullet.pullType = 5;
-                }
+            if (Random.Range(0.0f, 1.0f) < 0.006f) {
+                bullet.pullType = 5;
             }
             else {
-                isFiftyFifty = true;
-                bullet.pullType = 6;
+                bullet.pullType = 3;
             }
+        }
+        else {
+            bullet.pullType = 5;
+        }
+
+        if (bullet.pullType == 5) {
+            pityCount = 0;
+            bullet.yellowGlow.SetActive(true);
+            bullet.speed = 7f;
+            // if (isFiftyFifty) {
+            //     if (Random.Range(0, 2) == 0) {
+            //         bullet.pullType = 6;
+            //     }
+            //     else {
+            //         isFiftyFifty = false;
+            //     }
+            // }
+            // else {
+            //     bullet.pullType = 6;
+            //     isFiftyFifty = true;
+            // }
+        } 
+        else {
+            bullet.yellowGlow.SetActive(false);
+            bullet.speed = Random.Range(4.0f, 6.0f);
         }
     }
 
@@ -121,6 +133,7 @@ public class EnemyController : MonoBehaviour
         offset *= Quaternion.Euler(0, 0, 90);
 
         GameObject toAdd = Instantiate(toSpawn, loc, gameObject.transform.rotation);
+        setPull(toAdd.GetComponent<BulletController>());
         toAdd.transform.rotation = offset * transform.rotation;
         return toAdd;
 
