@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private bool isGameOver = false;
     private Vector3 minScreenBounds;
     private Vector3 maxScreenBounds;
+    private BulletController bulletInCollider;
 
     public GameObject[] ticks;
     public GameObject[] threeStars;
@@ -71,13 +72,23 @@ public class PlayerController : MonoBehaviour
             if (isGameOver) {
                 return;
             }
-            if (isDamageCooldown && bullet.pullType == 3) {
+            if (isDamageCooldown) {
+                if (bullet.pullType != 3) {
+                    bulletInCollider = bullet;
+                }
                 return;
             }
             takeDamage(bullet.pullType);
             Destroy(bullet.gameObject);
         }
     }
+
+    private void OnTriggerExit2D (Collider2D col) {
+        BulletController bullet = col.gameObject.GetComponentInParent<BulletController>();
+        if (bullet != null && bullet == bulletInCollider) {
+            bulletInCollider = null;
+        }        
+      }
 
     public void setIsGameOver(bool isGameOver)
     {
@@ -103,6 +114,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(damageCooldownTime);
         isDamageCooldown = false;
+        if (bulletInCollider != null) {
+            takeDamage(bulletInCollider.pullType);
+            Destroy(bulletInCollider.gameObject);
+            bulletInCollider = null;
+        }
     }
 
     void takeDamage(int pullType)

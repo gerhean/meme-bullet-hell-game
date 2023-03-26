@@ -274,8 +274,8 @@ MonoBehaviour:
   playerController: {fileID: 335710501}
   textbox: {fileID: 33023670}
   continueTimer: 1
-  timeLimit: 600
-  timeRemaining: 600
+  timeLimit: 300
+  timeRemaining: 0
 --- !u!1 &48974783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,7 +1168,7 @@ MonoBehaviour:
   pullSound: {fileID: 1833123238}
   splashBox: {fileID: 1213267908}
   runSpeed: 400
-  maxPrimos: 6400
+  maxPrimos: 4800
   commonDamageCooldownTime: 0.4
   rareDamageCooldownTime: 2
   ticks:
@@ -1689,10 +1689,10 @@ RectTransform:
   m_Father: {fileID: 1218013179}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -314.9, y: 84.1784}
-  m_SizeDelta: {x: 100, y: 131.6432}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 56.600006, y: -69.2}
+  m_SizeDelta: {x: 100, y: 131.64319}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &651447251
 MonoBehaviour:
@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e15e66c2843ad164d87e0a0a05791903, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3dd7b3c878a4f1549857e559a6f330b2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2263,9 +2263,9 @@ RectTransform:
   m_Father: {fileID: 1218013179}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300.00006, y: 150}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -77.399994, y: -22.809998}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &994696272
@@ -2970,8 +2970,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
