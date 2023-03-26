@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
+    public PlayerController playerController;
     public TMPro.TextMeshProUGUI textbox;
     public bool continueTimer = true;
-    public float timeRemaining = 300;
+    public float timeLimit = 300;
+    public float timeRemaining;
 
+    void Start () {
+        timeRemaining = timeLimit;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (timeRemaining <= 0) {
             timeRemaining = 0;
+            playerController.setIsGameOver(true);
             continueTimer = false;
             textbox.text = "0 minute(s) 0 second(s)";
         }

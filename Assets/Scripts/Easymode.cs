@@ -13,10 +13,12 @@ public class Easymode : EnemyController
         yield return new WaitForSeconds(2f);
         while (true)
         {
-            float angle = 200f / tackCount;
+            float angle = 180f / tackCount;
             for (int i = 0; i < tackCount; i++)
             {
-                ShootAtPlayer(Quaternion.Euler(0, 0, -100 + angle * i));
+                if (Random.Range(0, 5) != 0) {
+                    ShootAtPlayer(Quaternion.Euler(0, 0, -90 + angle * i));
+                }
             }
 
             yield return new WaitForSeconds(Random.Range(0.5f, tackAttackCooldown));

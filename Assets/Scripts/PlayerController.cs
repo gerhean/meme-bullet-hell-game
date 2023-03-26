@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController playerController;
     public Timer timer;
+    public GameOver gameOverScreen;
     public TMPro.TextMeshProUGUI primoCountText;
     public AudioSource pullSound;
     public GameObject splashBox;
@@ -20,11 +21,16 @@ public class PlayerController : MonoBehaviour
     public int maxPrimos = 8000;
     private int currentPrimos = 1;
     private bool isFiftyFifty = true;
+    private int threeStarObtained = 0;
+    private int fiveStarObtained = 0;
     private int bannerObtained = 0;
 
     public float commonDamageCooldownTime = 0.4f;
     public float rareDamageCooldownTime = 1.0f;
     private bool isDamageCooldown = false;
+    private bool isGameOver = false;
+    private Vector3 minScreenBounds;
+    private Vector3 maxScreenBounds;
 
     public GameObject[] ticks;
     public GameObject[] threeStars;
@@ -33,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        minScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
+        maxScreenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         body = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
         playerController = this;
@@ -52,6 +60,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         body.velocity = new Vector2(horizontal, vertical) * runSpeed * Time.fixedDeltaTime;
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, minScreenBounds.x + 1, maxScreenBounds.x - 1),Mathf.Clamp(transform.position.y, minScreenBounds.y + 1, maxScreenBounds.y - 1), transform.position.z);
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -59,12 +68,23 @@ public class PlayerController : MonoBehaviour
         BulletController bullet = col.gameObject.GetComponentInParent<BulletController>();
         if (bullet != null)
         {
-            if (isDamageCooldown || currentPrimos <= 0) {
+            if (isGameOver) {
                 return;
             }
-            isDamageCooldown = true;
+            if (isDamageCooldown && bullet.pullType == 3) {
+                return;
+            }
             takeDamage(bullet.pullType);
             Destroy(bullet.gameObject);
+        }
+    }
+
+    public void setIsGameOver(bool isGameOver)
+    {
+        this.isGameOver = isGameOver;
+        if (isGameOver) {
+            timer.continueTimer = false;
+            gameOverScreen.OpenScreen(threeStarObtained, fiveStarObtained, bannerObtained, currentPrimos);
         }
     }
 
@@ -87,18 +107,20 @@ public class PlayerController : MonoBehaviour
 
     void takeDamage(int pullType)
     {
+        isDamageCooldown = true;
         StartCoroutine(BlinkWhileDamaged());
         GameObject prefab = null;
         float damageCooldownTime = 0.0f;
+        pullSound.Play();
         if (pullType == 3) {
-            pullSound.Play();
-            prefab = threeStars[Random.Range(0, threeStars.Length)];
+            threeStarObtained++;
             damageCooldownTime = commonDamageCooldownTime;
+            prefab = threeStars[Random.Range(0, threeStars.Length)];
         }
         else if (pullType == 5) {
             damageCooldownTime = rareDamageCooldownTime;
             if (isFiftyFifty) {
-                if (Random.Range(0, 3) == 0) {
+                if (Random.Range(0, 2) == 0) {
                     pullType = 6;
                 }
                 else {
@@ -111,30 +133,36 @@ public class PlayerController : MonoBehaviour
             }
         }
         else {
+            Debug.Log("Invalid pull type");
             return;
         }
 
         if (pullType == 5)
         {
+            fiveStarObtained++;
             prefab = fiveStars[Random.Range(0, fiveStars.Length)];
         }
         else if (pullType == 6) {
-            prefab = bannerFiveStar;
             ticks[bannerObtained].SetActive(true);
+            damageCooldownTime += 1.0f;
             bannerObtained++;
+            prefab = bannerFiveStar;
         }
 
         GameObject splash = Instantiate(prefab, splashBox.transform);
         splash.transform.SetParent(splashBox.transform);
-        StartCoroutine(DamageCooldown(commonDamageCooldownTime));
-        Destroy(splash, commonDamageCooldownTime);
+        StartCoroutine(DamageCooldown(damageCooldownTime));
+        Destroy(splash, damageCooldownTime);
 
         currentPrimos -= 160;
         primoCountText.text = currentPrimos.ToString();
         //Add something when player is dead
         if (currentPrimos <= 0) {
             currentPrimos = 0;
-            timer.continueTimer = false;
+            setIsGameOver(true);
+        }
+        if (bannerObtained >= 7) {
+            setIsGameOver(true);
         }
     }
 

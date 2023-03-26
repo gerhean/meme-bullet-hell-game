@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public AudioSource pullStartSound;
     public GameObject bullet;
     public float attackCooldown = 1f;
 
@@ -61,24 +62,13 @@ public class EnemyController : MonoBehaviour
 
         if (bullet.pullType == 5) {
             pityCount = 0;
+            pullStartSound.Play();
             bullet.yellowGlow.SetActive(true);
-            bullet.speed = 7f;
-            // if (isFiftyFifty) {
-            //     if (Random.Range(0, 2) == 0) {
-            //         bullet.pullType = 6;
-            //     }
-            //     else {
-            //         isFiftyFifty = false;
-            //     }
-            // }
-            // else {
-            //     bullet.pullType = 6;
-            //     isFiftyFifty = true;
-            // }
+            bullet.speed = 5.0f;
         } 
         else {
             bullet.yellowGlow.SetActive(false);
-            bullet.speed = Random.Range(4.0f, 6.0f);
+            bullet.speed = Random.Range(3.0f, 6.0f);
         }
     }
 
