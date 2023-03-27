@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 minScreenBounds;
     private Vector3 maxScreenBounds;
     private BulletController bulletInCollider;
+    private Color defaultColor;
 
     public GameObject[] ticks;
     public GameObject[] threeStars;
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
         playerController = this;
         currentPrimos = maxPrimos;
         primoCountText.text = currentPrimos.ToString();
+        defaultColor = playerSprite.color;
         for (int i = 0; i < ticks.Length; i++) {
             ticks[i].SetActive(false);
         }
@@ -105,7 +107,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private IEnumerator BlinkWhileDamaged() {
-        Color defaultColor = playerSprite.color;
         yield return new WaitForSeconds(0.01f);
         while (isDamageCooldown) {
             playerSprite.color = new Color(0f, 0f, 0f, 0f);
