@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private float vertical;
 
     public static PlayerController playerController;
+    public FloatingJoystick joystick;
     public Timer timer;
     public GameOver gameOverScreen;
     public TMPro.TextMeshProUGUI primoCountText;
@@ -56,6 +57,10 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+        if (horizontal == 0 && vertical == 0) {
+            horizontal = joystick.Horizontal;
+            vertical = joystick.Vertical;
+        }
     }
 
     private void FixedUpdate()
